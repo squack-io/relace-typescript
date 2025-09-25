@@ -142,7 +142,7 @@ export class RelaceAgentSDK {
    * API Client for interfacing with the Relace Agent SDK API.
    *
    * @param {string | undefined} [opts.apiKey=process.env['RELACE_AGENT_SDK_API_KEY'] ?? undefined]
-   * @param {string} [opts.baseURL=process.env['RELACE_AGENT_SDK_BASE_URL'] ?? https://api.relace.run/v1/repo] - Override the default base URL for the API.
+   * @param {string} [opts.baseURL=process.env['RELACE_AGENT_SDK_BASE_URL'] ?? https://api.example.com] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {MergedRequestInit} [opts.fetchOptions] - Additional `RequestInit` options to be passed to `fetch` calls.
    * @param {Fetch} [opts.fetch] - Specify a custom `fetch` function implementation.
@@ -164,7 +164,7 @@ export class RelaceAgentSDK {
     const options: ClientOptions = {
       apiKey,
       ...opts,
-      baseURL: baseURL || `https://api.relace.run/v1/repo`,
+      baseURL: baseURL || `https://api.example.com`,
     };
 
     this.baseURL = options.baseURL!;
@@ -210,7 +210,7 @@ export class RelaceAgentSDK {
    * Check whether the base URL is set to its default.
    */
   #baseURLOverridden(): boolean {
-    return this.baseURL !== 'https://api.relace.run/v1/repo';
+    return this.baseURL !== 'https://api.example.com';
   }
 
   protected defaultQuery(): Record<string, string | undefined> | undefined {

@@ -312,13 +312,13 @@ describe('instantiate client', () => {
     test('empty env variable', () => {
       process.env['RELACE_AGENT_SDK_BASE_URL'] = ''; // empty
       const client = new RelaceAgentSDK({ apiKey: 'My API Key' });
-      expect(client.baseURL).toEqual('https://api.relace.run/v1/repo');
+      expect(client.baseURL).toEqual('https://api.example.com');
     });
 
     test('blank env variable', () => {
       process.env['RELACE_AGENT_SDK_BASE_URL'] = '  '; // blank
       const client = new RelaceAgentSDK({ apiKey: 'My API Key' });
-      expect(client.baseURL).toEqual('https://api.relace.run/v1/repo');
+      expect(client.baseURL).toEqual('https://api.example.com');
     });
 
     test('in request options', () => {
