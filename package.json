@@ -1,6 +1,6 @@
 {
   "name": "relace-agent-sdk",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "The official TypeScript library for the Relace Agent SDK API",
   "author": "Relace Agent SDK <>",
   "types": "dist/index.d.ts",
