@@ -42,15 +42,15 @@ If you’d like to use the repository from source, you can either install from g
 To install via git:
 
 ```sh
-$ npm install git+ssh://git@github.com:stainless-sdks/relace-agent-sdk-typescript.git
+$ npm install git+ssh://git@github.com:squack-io/relace-typescript.git
 ```
 
 Alternatively, to link a local copy of the repo:
 
 ```sh
 # Clone
-$ git clone https://www.github.com/stainless-sdks/relace-agent-sdk-typescript
-$ cd relace-agent-sdk-typescript
+$ git clone https://www.github.com/squack-io/relace-typescript
+$ cd relace-typescript
 
 # With yarn
 $ yarn link
