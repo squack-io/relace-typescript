@@ -7,10 +7,9 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "baseUrl": "./",
     "paths": {
-      "relace-agent-sdk/*": ["src/*"],
-      "relace-agent-sdk": ["src/index.ts"]
+      "relace-agent-sdk/*": ["./src/*"],
+      "relace-agent-sdk": ["./src/index.ts"]
     },
     "noEmit": true,
 
