@@ -1,4 +1,5 @@
 import { RelaceAgentSDK } from './client';
+import fs from 'fs';
 
 /**
  * Types for file operations.
@@ -20,8 +21,6 @@ type DeleteOperation = {
   filename: string;
 };
 
-type Metadata = Record<string, any>;
-
 type Operation = WriteOperation | RenameOperation | DeleteOperation;
 
 /**
@@ -37,6 +36,7 @@ type FileObject = {
  */
 class batchDiffUpdate {
   private operations: Operation[] = [];
+  private metadata?: Record<string, string>;
   constructor(
     private client: RelaceAgentSDK,
     private repoId: string,
@@ -57,10 +57,18 @@ class batchDiffUpdate {
     return this;
   }
 
-  async commit(metadata: Metadata) {
+  /**
+   * Set optional metadata for the update.
+   */
+  setMetadata(metadata: Record<string, string>): this {
+    this.metadata = metadata;
+    return this;
+  }
+
+  async execute() {
     return this.client.repo.updateContents(this.repoId, {
       source: { type: 'diff', operations: this.operations },
-      ...(metadata && { metadata }),
+      ...(this.metadata ? { metadata: this.metadata } : {}),
     });
   }
 }
@@ -70,6 +78,9 @@ class batchDiffUpdate {
  */
 class batchFilesUpdate {
   private files: FileObject[] = [];
+  private filePaths: string[] = [];
+  private metadata?: Record<string, string>;
+
   constructor(
     private client: RelaceAgentSDK,
     private repoId: string,
@@ -86,10 +97,41 @@ class batchFilesUpdate {
     return this;
   }
 
-  async commit(metadata?: Record<string, any>) {
+  /**
+   * Lazily add a file from disk. Content is only read at commit().
+   */
+  addFileFromPath(filePath: string): this {
+    this.filePaths.push(filePath);
+    return this;
+  }
+
+  /**
+   * Set optional metadata for the update.
+   */
+  setMetadata(metadata: Record<string, string>): this {
+    this.metadata = metadata;
+    return this;
+  }
+
+  /**
+   * Load any queued file paths before commit
+   */
+  private loadFilesFromPaths() {
+    for (const filePath of this.filePaths) {
+      const content = fs.readFileSync(filePath, 'utf8');
+      this.files.push({
+        filename: filePath,
+        content,
+      });
+    }
+    this.filePaths = [];
+  }
+
+  async execute() {
+    this.loadFilesFromPaths();
     return this.client.repo.updateContents(this.repoId, {
       source: { type: 'files', files: this.files },
-      ...(metadata ? { metadata } : {}),
+      ...(this.metadata ? { metadata: this.metadata } : {}),
     });
   }
 }
@@ -99,6 +141,8 @@ class batchFilesUpdate {
  */
 class batchFilesCreate {
   private files: FileObject[] = [];
+  private filePaths: string[] = [];
+  private metadata?: Record<string, string>;
   constructor(private client: RelaceAgentSDK) {}
 
   addFile(filename: string, content: string): this {
@@ -112,10 +156,41 @@ class batchFilesCreate {
     return this;
   }
 
-  async commit(metadata?: Record<string, any>) {
+  /**
+   * Lazily add a file from disk. Content is only read at commit().
+   */
+  addFileFromPath(filePath: string): this {
+    this.filePaths.push(filePath);
+    return this;
+  }
+
+  /**
+   * Set optional metadata for the update.
+   */
+  setMetadata(metadata: Record<string, string>): this {
+    this.metadata = metadata;
+    return this;
+  }
+
+  /**
+   * Load any queued file paths before commit
+   */
+  private loadFilesFromPaths() {
+    for (const filePath of this.filePaths) {
+      const content = fs.readFileSync(filePath, 'utf8');
+      this.files.push({
+        filename: filePath,
+        content,
+      });
+    }
+    this.filePaths = [];
+  }
+
+  async execute() {
+    this.loadFilesFromPaths();
     return this.client.repo.create({
       source: { type: 'files', files: this.files },
-      ...(metadata ? { metadata } : {}),
+      ...(this.metadata ? { metadata: this.metadata } : {}),
     });
   }
 }
