@@ -20,3 +20,8 @@ export {
   PermissionDeniedError,
   UnprocessableEntityError,
 } from './core/error';
+
+// --- CUSTOM CODE STARTS HERE ---
+import { attachBatchUpdate } from './batch';
+import { RelaceAgentSDK } from './client';
+attachBatchUpdate(RelaceAgentSDK);
