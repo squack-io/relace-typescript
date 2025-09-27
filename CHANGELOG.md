@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.1 (2025-09-27)
+
+Full Changelog: [v0.1.0...v0.1.1](https://github.com/squack-io/relace-typescript/compare/v0.1.0...v0.1.1)
+
+### Chores
+
+* **internal:** fix incremental formatting in some cases ([29f2606](https://github.com/squack-io/relace-typescript/commit/29f26062d540d238cb496853eafb1f09ca269afb))
+
 ## 0.1.0 (2025-09-26)
 
 Full Changelog: [v0.0.1...v0.1.0](https://github.com/squack-io/relace-typescript/compare/v0.0.1...v0.1.0)
